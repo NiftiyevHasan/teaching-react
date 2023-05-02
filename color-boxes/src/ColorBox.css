@@ -1,0 +1,7 @@
+.Box {
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 20em;
+    height: 20em;
+}
