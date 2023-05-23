@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {randomWord} from "./words.js"
+import { randomWord } from "./words.js";
 import "./Hangman.css";
 import img0 from "./0.jpg";
 import img1 from "./1.jpg";
@@ -13,15 +13,19 @@ class Hangman extends Component {
   /** by default, allow 6 guesses and use provided gallows images. */
   static defaultProps = {
     maxWrong: 6,
-    images: [img0, img1, img2, img3, img4, img5, img6]
+    images: [img0, img1, img2, img3, img4, img5, img6],
   };
 
   constructor(props) {
     super(props);
-    this.state = { nWrong: 0, guessed: new Set(), answer: randomWord() , isGameOver: false };
+    this.state = {
+      nWrong: 0,
+      guessed: new Set(),
+      answer: randomWord(),
+      isGameOver: false,
+    };
     this.handleGuess = this.handleGuess.bind(this);
     this.handleReset = this.handleReset.bind(this);
-
   }
 
   /** guessedWord: show current-state of word:
@@ -30,7 +34,7 @@ class Hangman extends Component {
   guessedWord() {
     return this.state.answer
       .split("")
-      .map(ltr => (this.state.guessed.has(ltr) ? ltr : "_"));
+      .map((ltr) => (this.state.guessed.has(ltr) ? ltr : "_"));
   }
 
   /** handleGuest: handle a guessed letter:
@@ -39,22 +43,27 @@ class Hangman extends Component {
   */
   handleGuess(evt) {
     let ltr = evt.target.value;
-    
-      !this.state.isGameOver && this.setState(st => ({
+
+    !this.state.isGameOver &&
+      this.setState((st) => ({
         guessed: st.guessed.add(ltr),
         nWrong: st.nWrong + (st.answer.includes(ltr) ? 0 : 1),
-        isGameOver: (st.nWrong < (this.props.maxWrong-1) ? false : true)
+        isGameOver: st.nWrong < this.props.maxWrong - 1 ? false : true,
       }));
   }
 
   handleReset(evt) {
-    this.setState( { nWrong: 0, guessed: new Set(), answer: randomWord() , isGameOver: false });
+    this.setState({
+      nWrong: 0,
+      guessed: new Set(),
+      answer: randomWord(),
+      isGameOver: false,
+    });
   }
 
   /** generateButtons: return array of letter buttons to render */
   generateButtons() {
-   
-    return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
+    return "abcdefghijklmnopqrstuvwxyz".split("").map((ltr) => (
       <button
         key={ltr}
         value={ltr}
@@ -64,18 +73,24 @@ class Hangman extends Component {
         {ltr}
       </button>
     ));
-    
   }
 
   /** render: render game */
   render() {
     return (
-      <div className='Hangman'>
+      <div className="Hangman">
         <h1>Hangman</h1>
-        <img alt={`${this.state.nWrong} mistake so far`} src={this.props.images[this.state.nWrong]} />
+        <img
+          alt={`${this.state.nWrong} mistake so far`}
+          src={this.props.images[this.state.nWrong]}
+        />
         <p>Number wrong: {this.state.nWrong}</p>
-        <p className='Hangman-word'>{!this.state.isGameOver ? this.guessedWord(): this.state.answer}</p>
-        <p className='Hangman-btns'>{!this.state.isGameOver ? this.generateButtons() : "you lose!"}</p>
+        <p className="Hangman-word">
+          {!this.state.isGameOver ? this.guessedWord() : this.state.answer}
+        </p>
+        <p className="Hangman-btns">
+          {!this.state.isGameOver ? this.generateButtons() : "you lose!"}
+        </p>
         <button onClick={this.handleReset}>Reset</button>
       </div>
     );
